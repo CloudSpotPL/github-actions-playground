@@ -32,7 +32,7 @@ jobs:
     - name: 'Validate Bicep'
       run: |
           az group create --name "rg-${{ github.event.inputs.proj }}" --location "${{ github.event.inputs.location }}"
-          az deployment group what-if --resource-group "rg-${{ github.event.inputs.proj }}" --template-file ./bicep/main.bicep --parameters storagePrefix="${{ github.event.inputs.proj }}"
+          az deployment group what-if --resource-group "rg-${{ github.event.inputs.proj }}" --template-file ./bicep/main.bicep --parameters storagePrefix="${{ github.event.inputs.proj }}" --mode Complete
   deploy:
     permissions:
       id-token: write
