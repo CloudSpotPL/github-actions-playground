@@ -18,7 +18,7 @@ jobs:
         iac_version: 'v14'
         policy_type: 'azure'
         only_warn: true
-        sarif_upload: true
+        sarif_upload: false
 
     - name: Upload Terrascan report
       uses: github/codeql-action/upload-sarif@v1
