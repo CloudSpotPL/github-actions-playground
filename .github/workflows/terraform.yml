@@ -1,0 +1,93 @@
+name: 'Run Terraform Code with Secrets'
+on:
+ workflow_dispatch:
+ 
+jobs:
+  terrascan:
+    runs-on: ubuntu-latest
+    name: Scan code
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Run Terrascan
+      id: terrascan
+      uses: accurics/terrascan-action@main
+      with:
+        iac_type: 'terraform'
+        iac_version: 'v14'
+        policy_type: 'azure'
+        only_warn: true
+        sarif_upload: true
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: terrascan.sarif
+
+  plan:
+    name: 'Validate Deployment'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENTID_TF }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET_TF }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANTID }}
+      tf_actions_working_dir: "./terraform/"
+    runs-on: ubuntu-latest
+ 
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+ 
+    steps:
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.10
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+ 
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt 
+      continue-on-error: true
+         
+    - name: Terraform init
+      id: init
+      run: terraform init
+ 
+    - name: Terraform plan
+      id: plan 
+      run: terraform plan -no-color -var-file="demo.tfvars" -out="${GITHUB_WORKSPACE}/terraform/demo.tfplan"
+      continue-on-error: false
+      
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: TerraformPlanOut
+        path: "/home/runner/work/cfe-github-kt/cfe-github-kt/terraform/demo.tfplan"
+       
+  apply:
+    name: 'Deploying Terraform Code'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENTID_TF }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET_TF }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANTID }}
+      tf_actions_working_dir: "./terraform/"
+    runs-on: ubuntu-latest
+    environment: 'Sandbox'
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+    steps:
+        - name: Download a Build Artifact
+          uses: actions/download-artifact@v2.0.10
+          with:
+            name: TerraformPlanOut
+            path: "demo.tfplan"
+        - name: Terraform Apply
+          id: apply
+          run: terraform apply "/home/runner/work/cfe-github-kt/cfe-github-kt/demo.tfplan"
+          continue-on-error: false

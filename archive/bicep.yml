@@ -1,0 +1,38 @@
+name: 'Run Azure Bicep Code with OpenID Connect'
+on:
+  workflow_dispatch:
+    inputs:
+      proj:
+        description: 'Project'
+        required: false
+        default: 'cfe'
+      location:
+        description: 'Location'
+        type: choice
+        required: true
+        options: 
+        - "West Europe"
+        - "West US"
+
+permissions:
+      id-token: write
+      
+jobs: 
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: 'Checkout code'
+    - uses: actions/checkout@main
+
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENTID }}
+          tenant-id: ${{ secrets.AZURE_TENANTID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+  
+    - name: 'Deploy Bicep'
+      run: |
+          az group create --name 'rg-${inputs.proj}'' --location '${inputs.location}''
+          az deployment group create --resource-group rg-${inputs.proj} --template-file ./bicep/main.bicep

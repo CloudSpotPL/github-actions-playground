@@ -1,0 +1,57 @@
+name: 'Run Azure Bicep Code with OpenID Connect'
+on:
+  workflow_dispatch:
+    inputs:
+      proj:
+        description: 'Project'
+        required: false
+        default: 'cfe'
+      location:
+        description: 'Location'
+        type: choice
+        required: true
+        options: 
+        - "West Europe"
+        - "West US"
+
+jobs: 
+  validate:
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: volvo-cars/cfe-github-kt
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENTID }}
+          tenant-id: ${{ secrets.AZURE_TENANTID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+    - name: 'Validate Bicep'
+      run: |
+          az group create --name "rg-${{ github.event.inputs.proj }}" --location "${{ github.event.inputs.location }}"
+          az deployment group what-if --resource-group "rg-${{ github.event.inputs.proj }}" --template-file ./bicep/main.bicep --parameters storagePrefix="${{ github.event.inputs.proj }}"
+  deploy:
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    environment: 'Sandbox'
+    needs: [validate]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: volvo-cars/cfe-github-kt
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENTID }}
+          tenant-id: ${{ secrets.AZURE_TENANTID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }}
+    - name: 'Deploy Bicep'
+      run: |
+          az group create --name "rg-${{ github.event.inputs.proj }}" --location "${{ github.event.inputs.location }}"
+          az deployment group create --resource-group "rg-${{ github.event.inputs.proj }}" --template-file ./bicep/main.bicep --parameters storagePrefix="${{ github.event.inputs.proj }}"
