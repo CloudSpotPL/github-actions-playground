@@ -101,5 +101,5 @@ jobs:
             path: "demo.tfplan"
         - name: Terraform Apply
           id: apply
-          run: terraform apply "demo.tfplan"
+          run: terraform apply "/home/runner/work/github-actions-playground/github-actions-playground/demo.tfplan"
           continue-on-error: false
