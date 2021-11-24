@@ -77,7 +77,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: TerraformPlanOut
-        path: "${GITHUB_WORKSPACE}/terraform/demo.tfplan"
+        path: "/home/runner/work/github-actions-playground/github-actions-playground/terraform/demo.tfplan"
        
   apply:
     name: 'Deploying Terraform Code'
