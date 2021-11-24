@@ -92,9 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'Sandbox'
     needs: [plan]
-    defaults:
-      run:
-        working-directory: ${{ env.tf_actions_working_dir }}
+
     steps:
         - name: Download a Build Artifact
           uses: actions/download-artifact@v2.0.10
