@@ -102,7 +102,11 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v2
           
+        - name: Terraform init
+          id: init
+          run: terraform init
+          
         - name: Terraform Apply
           id: apply
-          run: terraform apply
+          run: terraform apply -var-file="demo.tfvars" -auto-approve
           continue-on-error: false
