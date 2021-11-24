@@ -62,7 +62,7 @@ jobs:
     - name: Terraform fmt
       id: fmt
       run: terraform fmt 
-      continue-on-error: true
+      continue-on-error: false
          
     - name: Terraform init
       id: init
@@ -101,5 +101,5 @@ jobs:
             path: "demo.tfplan"
         - name: Terraform Apply
           id: apply
-          run: terraform apply "/home/runner/work/cfe-github-kt/cfe-github-kt/demo.tfplan"
+          run: terraform apply "/home/runner/work/github-actions-playground/github-actions-playground/terraform/demo.tfplan"
           continue-on-error: false
