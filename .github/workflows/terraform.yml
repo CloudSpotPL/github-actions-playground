@@ -86,8 +86,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: 'Sandbox'
     needs: [plan]
-
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
     steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+          
         - name: Terraform Apply
           id: apply
           run: terraform apply
