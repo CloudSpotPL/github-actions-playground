@@ -51,5 +51,5 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }}
     - name: 'Deploy Bicep'
       run: |
-          az group create --name "rg-${{ github.event.inputs.proj }}" --location "${{ github.event.inputs.location }}"
+          az group create --name "rg-cfe" --location "${{ github.event.inputs.location }}"
           az deployment group create --resource-group "rg-${{ github.event.inputs.proj }}" --template-file ./bicep/main.bicep --parameters storagePrefix="${{ github.event.inputs.proj }}"
