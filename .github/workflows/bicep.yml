@@ -15,7 +15,7 @@ on:
         - "West US"
 
 jobs: 
-  validate:
+  plan:
     permissions:
       id-token: write
       contents: read
@@ -39,7 +39,7 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     environment: 'Sandbox'
-    needs: [validate]
+    needs: [plan]
     steps:
     - uses: actions/checkout@v2
       with:
