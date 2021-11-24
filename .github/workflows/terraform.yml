@@ -5,7 +5,7 @@ on:
 jobs:
   terrascan:
     runs-on: ubuntu-latest
-    name: Scan code
+    name: Scan code - terrascan
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
       with:
         sarif_file: terrascan.sarif
   tfsec:
-      name: tfsec
+      name: Scan Code - tfsec
       runs-on: ubuntu-latest
       needs: [terrascan]
       steps:
@@ -33,14 +33,9 @@ jobs:
           uses: actions/checkout@master
 
         - name: tfsec
-          uses: tfsec/tfsec-sarif-action@main
+          uses: aquasecurity/tfsec-sarif-action@v0.0.6
           with:
-            sarif_file: tfsec.sarif         
-
-        - name: Upload SARIF file
-          uses: github/codeql-action/upload-sarif@v1
-          with:
-            sarif_file: tfsec.sarif    
+            sarif_file: tfsec.sarif           
   plan:
     name: 'Validate Deployment'
     env:
