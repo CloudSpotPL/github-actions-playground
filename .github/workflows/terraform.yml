@@ -100,5 +100,5 @@ jobs:
           
         - name: Terraform Apply
           id: apply
-          run: terraform apply
+          run: terraform apply -var-file="demo.tfvars" -auto-approve
           continue-on-error: false
