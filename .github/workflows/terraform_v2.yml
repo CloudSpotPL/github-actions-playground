@@ -47,7 +47,7 @@ jobs:
         git-push: "true"
         find-dir: ./terraform
         
-  plan:
+   plan:
     name: 'Validate Deployment'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENTID_TF }}
@@ -84,7 +84,7 @@ jobs:
       run: terraform plan -no-color -var-file="demo.tfvars" -out="${GITHUB_WORKSPACE}/terraform/demo.tfplan"
       continue-on-error: false
       
-  apply:
+   apply:
     name: 'Deploying Terraform Code'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENTID_TF }}
