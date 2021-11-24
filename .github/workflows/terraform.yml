@@ -98,8 +98,8 @@ jobs:
           uses: actions/download-artifact@v2.0.10
           with:
             name: TerraformPlanOut
-            path: "/home/runner/work/github-actions-playground/github-actions-playground/demo.tfplan"
+            path: "demo.tfplan"
         - name: Terraform Apply
           id: apply
-          run: terraform apply "/home/runner/work/github-actions-playground/github-actions-playground/demo.tfplan"
+          run: terraform apply "demo.tfplan"
           continue-on-error: false
