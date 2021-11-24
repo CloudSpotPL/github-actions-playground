@@ -83,6 +83,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET_TF }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTIONID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANTID }}
+      tf_actions_working_dir: "./terraform/"
     runs-on: ubuntu-latest
     environment: 'Sandbox'
     needs: [plan]
