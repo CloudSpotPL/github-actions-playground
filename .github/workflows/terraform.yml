@@ -34,7 +34,7 @@ jobs:
       uses: terraform-docs/gh-actions@v0.11.0
       with:
         working-dir: .
-        output-file: USAGE.md
+        output-file: DEMO.md
         output-method: inject
         git-push: "true"
         find-dir: ./terraform
