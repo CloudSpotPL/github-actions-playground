@@ -5,7 +5,7 @@ on:
       proj:
         description: 'Project'
         required: false
-        default: 'cfe'
+        default: 'ghbicep01'
       location:
         description: 'Location'
         type: choice
