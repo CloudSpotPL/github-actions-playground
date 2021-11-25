@@ -9,7 +9,13 @@ resource "azurerm_key_vault" "kv" {
   enabled_for_disk_encryption = true
   tenant_id                   = azurerm_subscription.current.tenant_id
   soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
+  purge_protection_enabled    = true
 
   sku_name = "standard"
+
+  network_acls {
+
+    default_action = "deny"
+
+  }
 }
