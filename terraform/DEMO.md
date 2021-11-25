@@ -11,7 +11,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | =2.84.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.84.0 |
 
 ## Modules
 
@@ -34,7 +34,9 @@
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_rg_name"></a> [rg\_name](#output\_rg\_name) | n/a |
 
 <!--- END_TF_DOCS --->
 
