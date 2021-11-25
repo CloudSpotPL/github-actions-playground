@@ -1,5 +1,5 @@
 @minLength(2)
-@maxLength(4)
+@maxLength(12)
 param storagePrefix string
 
 @allowed([
