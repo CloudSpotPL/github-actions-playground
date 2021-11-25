@@ -15,7 +15,9 @@
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_kv01"></a> [kv01](#module\_kv01) | ./modules/keyvault | n/a |
 
 ## Resources
 
